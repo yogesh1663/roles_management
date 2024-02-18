@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -9,6 +10,9 @@ class LoginController extends Controller
 {
     public function login()
     {
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
         return view('login');
     }
     public function loginPost(Request $request)

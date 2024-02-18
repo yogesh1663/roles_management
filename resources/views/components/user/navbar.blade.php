@@ -8,7 +8,6 @@
     @else
         <div class="d-inline">
             <a href="{{ route('login') }}" class="text-white link-secondary mr-3">Login </a>
-            <a href="{{ route('users.create') }}" class="text-white link-secondary ml-2"> Register</a>
         </div>
     @endauth
 </nav>
