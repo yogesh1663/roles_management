@@ -34,9 +34,9 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'roles' => 'required'
+            'roles' => 'required|array'
         ]);
         $users = User::create([
             'name' => $request->name,
@@ -60,7 +60,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        return view('users.edit', ['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -68,7 +69,32 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:6',
+            'roles' => 'required|array'
+        ]);
+
+
+        //attach add id's
+        //detach delete id's
+        //sync delete id's then add id's
+        $user->update(
+            [
+                'name' => $request->name,
+                'email' => $request->email,
+            ]
+        );
+        if ($request->password) {
+            $user->update(
+                [
+                    'password' => bcrypt($request->password),
+                ]
+            );
+        }
+        $user->roles()->sync($request->input('roles'));
+        return redirect()->route('users.index')->with('success', 'User data has been successfully updated.');
     }
 
     /**
@@ -76,6 +102,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->roles()->detach();
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'user data has been successfully deleted.');
     }
 }

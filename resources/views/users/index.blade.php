@@ -26,9 +26,13 @@
                             @endforeach
                         </td>
                         <td class="text-center">
-                            <a href="" class="btn btn-sm btn-secondary inline-block">View</a>
-                            <a href="" class="btn btn-sm btn-success inline-block">Edit</a>
-                            <a href="" class="btn btn-sm btn-danger inline-block">Delete</a>
+                            <a href="" class="btn btn-sm btn-secondary">View</a>
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-success">Edit</a>
+                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
