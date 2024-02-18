@@ -1,5 +1,9 @@
 <x-user.front-layout>
-    <div class="container">
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between mb-3">
+            <h4 class="text-bold">All users</h4>
+            <a href="{{ route('users.create') }}" class="btn btn-sm btn-primary">Add user</a>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
